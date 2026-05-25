@@ -131,6 +131,180 @@ _IMG_QUERIES = {
     "LEGS_msc": "leg squat quadriceps glutes workout muscles",
 }
 
+# ============================================================
+# 4.bis) BIBLIOTECA DE IMÁGENES DE EJERCICIO (Free Exercise DB)
+# ------------------------------------------------------------
+# Todas las imágenes de ejercicio se sirven desde una sola biblioteca
+# open-source (yuhonas/free-exercise-db) bajo licencia gratuita.
+# Son fotografías reales con fondo neutro (no generadas).
+# ============================================================
+EXERCISE_IMG_BASE = ("https://raw.githubusercontent.com/yuhonas/"
+                     "free-exercise-db/main/exercises/")
+
+# Mapeo: nombre del ejercicio en la rutina → slug del repo
+EXERCISE_SLUGS = {
+    # ---------- PUSH · calentamiento ----------
+    "Movilidad de hombros":          "Arm_Circles",
+    "Band pull-aparts":               "Band_Pull_Apart",
+    "Rotación externa con banda":     "Side-Lying_Floor_Stretch",
+    "Flexiones lentas":               "Pushups",
+    "Serie de aproximación":          "Barbell_Bench_Press_-_Medium_Grip",
+    # ---------- PUSH · V1 hipertrofia ----------
+    "Press de banca plano (barra)":   "Barbell_Bench_Press_-_Medium_Grip",
+    "Press militar (barra/manc.)":    "Standing_Military_Press",
+    "Press inclinado mancuernas":     "Incline_Dumbbell_Press",
+    "Aperturas (máquina/manc.)":      "Dumbbell_Flyes",
+    "Elevaciones laterales (manc.)":  "Side_Lateral_Raise",
+    "Extensión tríceps en polea":     "Triceps_Pushdown",
+    # ---------- PUSH · V2 fuerza ----------
+    "Press de banca pesado":          "Barbell_Bench_Press_-_Medium_Grip",
+    "Press militar pesado":           "Standing_Military_Press",
+    "Fondos en paralelas":            "Dips_-_Chest_Version",
+    "Elevaciones laterales":          "Side_Lateral_Raise",
+    "Press francés (barra/manc.)":    "Lying_Triceps_Press",
+    "Extensión tríceps mancuernas":   "Seated_Triceps_Press",
+    # ---------- PUSH · V3 resistencia ----------
+    "Press banca con mancuernas":     "Dumbbell_Bench_Press",
+    "Flexiones (push-ups)":           "Pushups",
+    "Press sentado en máquina":       "Machine_Shoulder_Military_Press",
+    "Elevaciones laterales ligeras":  "Side_Lateral_Raise",
+    "Extensión tríceps tras nuca":    "Seated_Triceps_Press",
+    # ---------- PULL · calentamiento ----------
+    "Movilidad torácica":             "Cat_Stretch",
+    "Face pulls con banda":           "Face_Pull",
+    "Dead-hang colgado":              "Pullups",
+    "Aproximación al jalón":          "Wide-Grip_Lat_Pulldown",
+    # ---------- PULL · V1 ----------
+    "Jalón al pecho (polea)":         "Wide-Grip_Lat_Pulldown",
+    "Remo con barra (o T-bar)":       "Bent_Over_Barbell_Row",
+    "Remo en máquina sentado":        "Seated_Cable_Rows",
+    "Curl martillo (manc.)":          "Hammer_Curls",
+    "Curl de bíceps (barra/manc.)":   "Barbell_Curl",
+    "Face pulls":                     "Face_Pull",
+    # ---------- PULL · V2 ----------
+    "Dominadas":                      "Pullups",
+    "Remo con barra pesado":          "Bent_Over_Barbell_Row",
+    "Remo en polea sentada (neutro)": "Seated_Cable_Rows",
+    "Jalón agarre estrecho (polea)":  "Close-Grip_Front_Lat_Pulldown",
+    "Curl con barra Z pesado":        "EZ-Bar_Curl",
+    # ---------- PULL · V3 ----------
+    "Remo polea baja (agarre ancho)": "Seated_Cable_Rows",
+    "Jalón agarre neutro":            "V-Bar_Pulldown",
+    "Remo máquina (agarre neutro)":   "Leverage_Iso_Row",
+    "Curl bíceps alterno (manc.)":    "Dumbbell_Bicep_Curl",
+    "Jalón brazos rígidos en polea":  "Straight-Arm_Pulldown",
+    # ---------- LEGS · calentamiento ----------
+    "Movilidad de cadera":            "Leg-Up_Hamstring_Stretch",
+    "Movilidad de tobillos":          "Ankle_Circles",
+    "Monster walks con banda":        "Monster_Walk",
+    "Glute bridge con banda":         "Butt_Lift_Bridge",
+    "Sentadillas progresivas":        "Bodyweight_Squat",
+    # ---------- LEGS · V1 ----------
+    "Sentadilla con barra":           "Barbell_Squat",
+    "Peso muerto rumano":             "Romanian_Deadlift",
+    "Prensa de piernas":              "Leg_Press",
+    "Zancadas con mancuernas":        "Dumbbell_Lunges",
+    "Elevación de talones":           "Standing_Calf_Raises",
+    # ---------- LEGS · V2 ----------
+    "Sentadilla trasera pesada":      "Barbell_Squat",
+    "Peso muerto (estándar o sumo)":  "Barbell_Deadlift",
+    "Zancada búlgara (barra/manc.)":  "Dumbbell_Rear_Lunge",
+    "Hip Thrust con barra":           "Barbell_Hip_Thrust",
+    "Curl femoral tumbado (máquina)": "Lying_Leg_Curls",
+    # ---------- LEGS · V3 ----------
+    "Sentadilla libre (cuerpo)":      "Bodyweight_Squat",
+    "Step-ups (subida a banco)":      "Dumbbell_Step_Ups",
+    "Puente de glúteos (hip thrust)": "Barbell_Glute_Bridge",
+    "Prensa de piernas ligera":       "Leg_Press",
+    "Elevación de gemelos":           "Standing_Calf_Raises",
+    # ---------- CORE ----------
+    "Dead Bug":                       "Dead_Bug",
+    "Pallof Press":                   "Pallof_Press_With_Rotation",
+    "Ab Wheel Rollout":               "Ab_Roller",
+    "Plancha lateral + rotación":     "Side_Bridge",
+}
+
+# Caché en memoria de rutas locales ya resueltas
+_EX_IMG_CACHE = {}
+
+
+def _slug_for_exercise(name):
+    """Devuelve el slug del repo para un nombre dado (case-insensitive,
+    quita HTML simple)."""
+    key = name.strip()
+    # Coincidencia exacta primero
+    if key in EXERCISE_SLUGS:
+        return EXERCISE_SLUGS[key]
+    # Coincidencia parcial (por si el nombre lleva paréntesis extra)
+    for k, v in EXERCISE_SLUGS.items():
+        if k.lower() in key.lower() or key.lower() in k.lower():
+            return v
+    return None
+
+
+def fetch_exercise_image(name, width=1.7*cm, height=1.25*cm, index=0):
+    """Descarga (o reutiliza desde caché) la imagen del ejercicio.
+    `index` 0 = posición inicial, 1 = posición final (free-exercise-db tiene 2).
+    Devuelve un flowable Image o un placeholder gris si no se encuentra.
+    Todas las imágenes proceden de la MISMA biblioteca (free-exercise-db)."""
+    slug = _slug_for_exercise(name)
+    if not slug:
+        return _img_placeholder(width, height)
+
+    cache_key = f"{slug}__{index}"
+    if cache_key in _EX_IMG_CACHE:
+        cached = _EX_IMG_CACHE[cache_key]
+        if cached and os.path.exists(cached):
+            try:
+                return Image(cached, width=width, height=height)
+            except Exception:
+                pass
+        else:
+            return _img_placeholder(width, height)
+
+    cache_path = os.path.join("_ex_imgs", f"{slug}_{index}.jpg")
+    os.makedirs("_ex_imgs", exist_ok=True)
+
+    if not os.path.exists(cache_path):
+        primary = f"{EXERCISE_IMG_BASE}{urllib.parse.quote(slug)}/{index}.jpg"
+        fallback = f"{EXERCISE_IMG_BASE}{urllib.parse.quote(slug)}/{1 - index}.jpg"
+        ok = False
+        for url in (primary, fallback):
+            try:
+                req = _urllib_request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+                with _urllib_request.urlopen(req, timeout=10) as resp:
+                    data = resp.read()
+                with open(cache_path, "wb") as f:
+                    f.write(data)
+                ok = True
+                break
+            except Exception:
+                continue
+        if not ok:
+            _EX_IMG_CACHE[cache_key] = None
+            print(f"  [img] no encontrada para: {name}  ({slug}/{index})")
+            return _img_placeholder(width, height)
+
+    _EX_IMG_CACHE[cache_key] = cache_path
+    try:
+        return Image(cache_path, width=width, height=height)
+    except Exception:
+        return _img_placeholder(width, height)
+
+
+class _img_placeholder(Flowable):
+    """Recuadro gris cuando no hay imagen disponible."""
+    def __init__(self, w, h):
+        super().__init__(); self.w = w; self.h = h
+    def wrap(self, *a): return (self.w, self.h)
+    def draw(self):
+        c = self.canv
+        c.setFillColor(colors.HexColor("#D9DADE"))
+        c.rect(0, 0, self.w, self.h, fill=1, stroke=0)
+        c.setStrokeColor(colors.HexColor("#9A9CA3"))
+        c.setLineWidth(0.4)
+        c.rect(0, 0, self.w, self.h, fill=0, stroke=1)
+
 def fetch_section_photo(session_key, width, height):
     """Descarga una foto real de Pexels para la sesión indicada.
     Usa caché local (_img_push.jpg, etc.).
@@ -426,9 +600,22 @@ def exercise_table(rows, accent=NARANJA):
     data = [header]
     for i, r in enumerate(rows, 1):
         ex_name = r[0]
+        _name_cell = Table(
+            [[fetch_exercise_image(ex_name, width=1.5*cm, height=1.1*cm),
+              Paragraph(f'<font face="{F_BOLD}">{ex_name}</font>', _ps_ex)]],
+            colWidths=[1.55*cm, 3.6*cm],
+        )
+        _name_cell.setStyle(TableStyle([
+            ("VALIGN",       (0,0), (-1,-1), "MIDDLE"),
+            ("LEFTPADDING",  (0,0), (-1,-1), 0),
+            ("RIGHTPADDING", (0,0), (-1,-1), 0),
+            ("TOPPADDING",   (0,0), (-1,-1), 0),
+            ("BOTTOMPADDING",(0,0), (-1,-1), 0),
+            ("LEFTPADDING",  (1,0), (1,0),   5),
+        ]))
         data.append([
             str(i),
-            Paragraph(f'<font face="{F_BOLD}">{ex_name}</font>', _ps_ex),
+            _name_cell,
             Paragraph(r[1], _ps_td),
             Paragraph(r[2], _ps_td),
             Paragraph(r[3], _ps_td),
@@ -453,6 +640,7 @@ def exercise_table(rows, accent=NARANJA):
         ("FONTNAME", (0,1), (0,-1), F_DISPLAY),
         ("TEXTCOLOR", (0,1), (0,-1), accent),
         ("ALIGN", (2,1), (4,-1), "CENTER"),
+        ("LEFTPADDING", (1,1), (1,-1), 3),
         ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
         ("ROWBACKGROUNDS", (0,1), (-1,-1), [BLANCO, GRIS_CLARO]),
         ("BOX", (0,0), (-1,-1), 0.5, GRIS_MEDIO),
@@ -551,13 +739,44 @@ def warmup_block(session, color, rows):
     flow.append(Spacer(1, 8))
     # Filas — Paragraph para permitir ajuste de línea en la columna FOCO
     _ps_wt  = ParagraphStyle("wt",  fontName=F_DISPLAY, fontSize=9,  leading=12, textColor=color)
-    _ps_we  = ParagraphStyle("we",  fontName=F_BOLD,    fontSize=9,  leading=12)
+    _ps_we  = ParagraphStyle("we",  fontName=F_BOLD,    fontSize=9,  leading=12, alignment=TA_CENTER)
     _ps_wfo = ParagraphStyle("wfo", fontName=F_LIGHT,   fontSize=8.5, leading=11.5, textColor=GRIS_OSCURO)
+    _ps_arr = ParagraphStyle("arr", fontName=F_DISPLAY, fontSize=14, leading=14, alignment=TA_CENTER, textColor=color)
     data = [["TIEMPO", "EJERCICIO", "FOCO"]]
     for r in rows:
+        # Secuencia de movimiento: posición inicial → posición final
+        _seq = Table(
+            [[fetch_exercise_image(r[1], width=2.0*cm, height=1.4*cm, index=0),
+              Paragraph("→", _ps_arr),
+              fetch_exercise_image(r[1], width=2.0*cm, height=1.4*cm, index=1)]],
+            colWidths=[2.05*cm, 0.5*cm, 2.05*cm],
+        )
+        _seq.setStyle(TableStyle([
+            ("VALIGN",       (0,0), (-1,-1), "MIDDLE"),
+            ("ALIGN",        (0,0), (-1,-1), "CENTER"),
+            ("LEFTPADDING",  (0,0), (-1,-1), 0),
+            ("RIGHTPADDING", (0,0), (-1,-1), 0),
+            ("TOPPADDING",   (0,0), (-1,-1), 0),
+            ("BOTTOMPADDING",(0,0), (-1,-1), 0),
+        ]))
+        _name_cell = Table(
+            [[_seq],
+             [Paragraph(r[1], _ps_we)]],
+            colWidths=[4.7*cm],
+        )
+        _name_cell.setStyle(TableStyle([
+            ("VALIGN",       (0,0), (-1,-1), "MIDDLE"),
+            ("ALIGN",        (0,0), (-1,-1), "CENTER"),
+            ("LEFTPADDING",  (0,0), (-1,-1), 0),
+            ("RIGHTPADDING", (0,0), (-1,-1), 0),
+            ("TOPPADDING",   (0,0), (0,0),   0),
+            ("BOTTOMPADDING",(0,0), (0,0),   2),
+            ("TOPPADDING",   (0,1), (0,1),   2),
+            ("BOTTOMPADDING",(0,1), (0,1),   0),
+        ]))
         data.append([
             Paragraph(r[0], _ps_wt),
-            Paragraph(r[1], _ps_we),
+            _name_cell,
             Paragraph(r[2], _ps_wfo),
         ])
     body_tbl = Table(data, colWidths=[2.2*cm, 5.5*cm, 9.3*cm], repeatRows=1)
@@ -574,6 +793,7 @@ def warmup_block(session, color, rows):
         ("FONTNAME", (2,1), (2,-1), F_LIGHT),
         ("FONTSIZE", (0,1), (-1,-1), 9),
         ("TEXTCOLOR", (1,1), (-1,-1), GRIS_OSCURO),
+        ("LEFTPADDING", (1,1), (1,-1), 3),
         ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
         ("ROWBACKGROUNDS", (0,1), (-1,-1), [BLANCO, GRIS_CLARO]),
         ("LINEBELOW", (0,0), (-1,0), 1.5, color),
@@ -1134,9 +1354,22 @@ def core_capsule(session_key, accent):
     _rows = [_header]
     for i, ej in enumerate(items, 1):
         _ps_num = ParagraphStyle(f"cc_n{i}", fontName=F_DISPLAY, fontSize=8.5, leading=11, alignment=TA_CENTER, textColor=accent)
+        _name_cell = Table(
+            [[fetch_exercise_image(ej[0], width=1.35*cm, height=1.0*cm),
+              Paragraph(f'<font face="{F_BOLD}">{ej[0]}</font>', _ps_td)]],
+            colWidths=[1.4*cm, 3.05*cm],
+        )
+        _name_cell.setStyle(TableStyle([
+            ("VALIGN",       (0,0), (-1,-1), "MIDDLE"),
+            ("LEFTPADDING",  (0,0), (-1,-1), 0),
+            ("RIGHTPADDING", (0,0), (-1,-1), 0),
+            ("TOPPADDING",   (0,0), (-1,-1), 0),
+            ("BOTTOMPADDING",(0,0), (-1,-1), 0),
+            ("LEFTPADDING",  (1,0), (1,0),   4),
+        ]))
         _rows.append([
             Paragraph(str(i), _ps_num),
-            Paragraph(f'<font face="{F_BOLD}">{ej[0]}</font>', _ps_td),
+            _name_cell,
             Paragraph(ej[1], _ps_tc),
             Paragraph(ej[2], _ps_tc),
             Paragraph(ej[3], _ps_tc),
@@ -1151,6 +1384,7 @@ def core_capsule(session_key, accent):
         ("ROWBACKGROUNDS",(0,1), (-1,-1), [BLANCO, GRIS_CLARO]),
         ("ALIGN",         (0,1), (0,-1),  "CENTER"),
         ("ALIGN",         (2,1), (5,-1),  "CENTER"),
+        ("LEFTPADDING",   (1,1), (1,-1),  3),
         ("VALIGN",        (0,0), (-1,-1), "MIDDLE"),
         ("BOX",           (0,0), (-1,-1), 0.6, GRIS_MEDIO),
         ("INNERGRID",     (0,0), (-1,-1), 0.25, GRIS_HUMO),
