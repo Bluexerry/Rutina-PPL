@@ -194,29 +194,30 @@ EXERCISE_SLUGS = {
     "Curl bíceps alterno (manc.)":    "Dumbbell_Bicep_Curl",
     "Jalón brazos rígidos en polea":  "Straight-Arm_Pulldown",
     # ---------- LEGS · calentamiento ----------
-    "Movilidad de cadera":            "Leg-Up_Hamstring_Stretch",
-    "Movilidad de tobillos":          "Ankle_Circles",
-    "Monster walks con banda":        "Monster_Walk",
-    "Glute bridge con banda":         "Butt_Lift_Bridge",
-    "Sentadillas progresivas":        "Bodyweight_Squat",
-    # ---------- LEGS · V1 ----------
-    "Sentadilla con barra":           "Barbell_Squat",
-    "Peso muerto rumano":             "Romanian_Deadlift",
-    "Prensa de piernas":              "Leg_Press",
-    "Zancadas con mancuernas":        "Dumbbell_Lunges",
-    "Elevación de talones":           "Standing_Calf_Raises",
-    # ---------- LEGS · V2 ----------
-    "Sentadilla trasera pesada":      "Barbell_Squat",
-    "Peso muerto (estándar o sumo)":  "Barbell_Deadlift",
-    "Zancada búlgara (barra/manc.)":  "Dumbbell_Rear_Lunge",
-    "Hip Thrust con barra":           "Barbell_Hip_Thrust",
-    "Curl femoral tumbado (máquina)": "Lying_Leg_Curls",
-    # ---------- LEGS · V3 ----------
-    "Sentadilla libre (cuerpo)":      "Bodyweight_Squat",
-    "Step-ups (subida a banco)":      "Dumbbell_Step_Ups",
-    "Puente de glúteos (hip thrust)": "Barbell_Glute_Bridge",
-    "Prensa de piernas ligera":       "Leg_Press",
-    "Elevación de gemelos":           "Standing_Calf_Raises",
+    "Movilidad de cadera":                         "Leg-Up_Hamstring_Stretch",
+    "Movilidad de tobillos":                       "Ankle_Circles",
+    "Monster walks con banda":                     "Monster_Walk",
+    "Glute bridge con banda":                      "Butt_Lift_Bridge",
+    "Sentadillas progresivas":                     "Bodyweight_Squat",
+    # ---------- LEGS · V1 (Hipertrofia) ----------
+    "Prensa de piernas (pie alto y ancho)":        "Leg_Press",
+    "Extensión de cuádriceps en máquina":          "Leg_Extensions",
+    "Curl femoral tumbado (máquina)":              "Lying_Leg_Curls",
+    "Hip thrust en máquina":                       "Barbell_Hip_Thrust",
+    "Elevación de talones sentado":                "Seated_Calf_Raise",
+    # ---------- LEGS · V2 (Fuerza) ----------
+    "Hack squat en máquina":                       "Hack_Squat",
+    "Prensa de piernas pesada":                    "Leg_Press",
+    "Curl femoral sentado (máquina)":              "Seated_Leg_Curl",
+    "Hip thrust en máquina (pesado)":              "Barbell_Hip_Thrust",
+    "Elevación de talones de pie en máquina":      "Standing_Calf_Raises",
+    # ---------- LEGS · V3 (Resistencia) ----------
+
+    "Prensa de piernas ligera":                    "Leg_Press",
+    "Extensión de cuádriceps (resistencia)":       "Leg_Extensions",
+    "Máquina de abductores":                       "Thigh_Abductor",
+    "Curl femoral tumbado (resistencia)":          "Lying_Leg_Curls",
+    "Elevación de gemelos sentado":                "Seated_Calf_Raise",
     # ---------- CORE ----------
     "Dead Bug":                       "Dead_Bug",
     "Pallof Press":                   "Pallof_Press_With_Rotation",
@@ -1631,47 +1632,49 @@ legs_warmup = [
     ("4:00–5:00", "Sentadillas progresivas",   "1×10 con peso corporal + 1–2 series al 50% 1RM · prepara el patrón motor de sentadilla."),
 ]
 legs_variantes = [
-    ("VARIANTE 1  ·  HIPERTROFIA", NARANJA,
-     "Rango 8–12 rep. Descansa 1–3 min.",
+    ("VARIANTE 1  ·  HIPERTROFIA (volumen alto)", NARANJA,
+     "Rango 8–12 rep. Énfasis en fase excéntrica lenta. Pausa en contracción máxima. RIR 1–2.",
      [
-        ["Sentadilla con barra",           "4 × 8–12",       "2-1-2", "1–3 min", "Cuádriceps · glúteos"],
-        ["Peso muerto rumano",             "3 × 8–12",       "3-1-1", "1–3 min", "Isquios · glúteos"],
-        ["Prensa de piernas",              "3 × 10–12",      "2-0-2", "1–3 min", "Cuádriceps · glúteos"],
-        ["Zancadas con mancuernas",        "3 × 10 / pierna", "2-0-2", "1–3 min", "Cuádriceps · glúteos"],
-        ["Elevación de talones",           "3 × 12–15",      "2-0-2", "1–3 min", "Gemelos"],
+        ["Prensa de piernas (pie alto y ancho)", "4 × 8–12",   "3-1-2", "2-3 min", "Cuádriceps · glúteos · aductores"],
+        ["Extensión de cuádriceps en máquina",   "3 × 10–12",  "2-2-3", "1-2 min", "Cuádriceps (4 cabezas · VMO)"],
+        ["Curl femoral tumbado (máquina)",       "3 × 10–12",  "3-1-2", "1-2 min", "Isquiotibiales · bíceps femoral"],
+        ["Hip thrust en máquina",                "3 × 10–12",  "2-2-1", "1-2 min", "Glúteo mayor · glúteo medio"],
+        ["Elevación de talones sentado",         "4 × 12–15",  "3-1-2", "1 min",   "Sóleo · gastrocnemio"],
      ],
-     "añadir 1–2 rep por semana o +2–5% de peso. RIR 1–2."),
-    ("VARIANTE 2  ·  FUERZA", ROJO,
-     "Cargas pesadas, técnica perfecta. Descansa 1–3 min.",
+     "añadir 1–2 rep por semana o +2–5% de carga al alcanzar el tope. Mantén la fase excéntrica controlada."),
+    ("VARIANTE 2  ·  FUERZA (cargas máximas)", ROJO,
+     "Cargas ≥80% 1RM, 4–7 rep. Excéntrico controlado, concéntrico explosivo. Descansa 2–3 min.",
      [
-        ["Sentadilla trasera pesada",      "4 × 4–6",       "3-1-1", "1–3 min", "Fuerza total piernas"],
-        ["Peso muerto (estándar o sumo)",  "3 × 4–6",       "3-1-1", "1–3 min", "Cadena posterior"],
-        ["Zancada búlgara (barra/manc.)",  "3 × 6–8 / pierna", "2-0-2", "1–3 min", "Cuádriceps · glúteos"],
-        ["Hip Thrust con barra",           "3 × 6–8",       "2-1-1", "1–3 min", "Glúteos"],
-        ["Curl femoral tumbado (máquina)", "3 × 6–8",       "2-0-2", "1–3 min", "Isquiotibiales"],
+        ["Hack squat en máquina",             "4 × 4–6",   "3-1-1", "2-3 min", "Cuádriceps (fuerza máxima)"],
+        ["Prensa de piernas pesada",          "3 × 5–7",   "3-1-1", "2-3 min", "Cuádriceps · glúteos"],
+        ["Curl femoral sentado (máquina)",    "3 × 6–8",   "3-1-1", "2 min",   "Isquiotibiales (estiramiento máximo)"],
+        ["Hip thrust en máquina (pesado)",    "3 × 6–8",   "2-1-1", "2 min",   "Glúteo mayor (fuerza)"],
+        ["Elevación de talones de pie en máquina", "3 × 8–10", "1-1-3", "1-2 min", "Gemelos · gastrocnemio"],
      ],
-     "aumentar peso según capacidad, manteniendo técnica."),
-    ("VARIANTE 3  ·  RESISTENCIA", AMBAR,
-     "Repeticiones altas. Descansa 1–3 min.",
+     "aumentar carga ~5% al lograr rep máximas con técnica. Concéntrico siempre explosivo."),
+    ("VARIANTE 3  ·  RESISTENCIA MUSCULAR", AMBAR,
+     "15–20 rep, cargas moderadas. Sin bloqueo articular — tensión continua. Descansa 1 min.",
      [
-        ["Sentadilla libre (cuerpo)",      "3 × 15–20",      "2-0-2", "1–3 min", "Cuádriceps · glúteos"],
-        ["Step-ups (subida a banco)",      "3 × 15 / pierna", "2-0-2", "1–3 min", "Piernas · glúteos"],
-        ["Puente de glúteos (hip thrust)", "3 × 15–20",      "2-0-2", "1–3 min", "Glúteos · coxales"],
-        ["Prensa de piernas ligera",       "3 × 15–20",      "2-0-2", "1–3 min", "Cuádriceps"],
-        ["Elevación de gemelos",           "3 × 20–25",      "2-0-2", "1–3 min", "Gemelos"],
+        ["Prensa de piernas ligera",              "3 × 15–20", "2-0-2", "1 min", "Cuádriceps · glúteos (resistencia)"],
+        ["Extensión de cuádriceps (resistencia)", "3 × 15–20", "2-1-2", "1 min", "Cuádriceps (bombeo · resistencia)"],
+        ["Máquina de abductores",                 "3 × 15–20", "2-1-2", "1 min", "Glúteo medio · TFL · abductores"],
+        ["Curl femoral tumbado (resistencia)",    "3 × 15–20", "2-0-2", "1 min", "Isquiotibiales (resistencia)"],
+        ["Elevación de gemelos sentado",          "3 × 20–25", "2-0-2", "1 min", "Sóleo (resistencia)"],
      ],
-     "incrementar repeticiones o series gradualmente."),
+     "incrementar repeticiones o series cada semana. Mantén la tensión en todo el rango sin soltar."),
 ]
 legs_comp = [
-    ["Variante 1", "Hipertrofia", "Alta (~15–18)", "Moderada (8–12 rep)", "Barra · máquina · mancuerna"],
-    ["Variante 2", "Fuerza",       "Media (~8–12)", "Alta (3–6 rep)",      "Barra · máquina (peso libre)"],
-    ["Variante 3", "Resistencia",  "Alta (12–15)",  "Baja (15–20 rep)",    "Mancuerna · peso corporal"],
+    ["Variante 1", "Hipertrofia", "Alta (~16–20)", "Moderada (8–12 rep)", "Máquinas: prensa · extensión · curl · hip thrust"],
+    ["Variante 2", "Fuerza",      "Media (~9–12)", "Alta (4–7 rep)",       "Máquinas: hack squat · prensa · curl sentado"],
+    ["Variante 3", "Resistencia", "Alta (12–15)",  "Baja (15–20 rep)",     "Máquinas: prensa · extensión · abductores · curl"],
 ]
 render_session(
     "06", "LEGS  ·  Piernas Completas",
-    "La sesión <b>Legs</b> trabaja <b>cuádriceps</b>, <b>glúteos</b>, "
-    "<b>isquiotibiales</b>, <b>aductores/abductores</b> y <b>gemelos</b>. Se plantean "
-    "tres variantes. Calentamiento específico de 5 minutos antes de comenzar.",
+    "La sesión <b>Legs</b> trabaja <b>cuádriceps</b> (4 cabezas), <b>glúteos</b> "
+    "(mayor y medio), <b>isquiotibiales</b>, <b>abductores</b> y <b>gemelos/sóleo</b>. "
+    "Las tres variantes utilizan <b>máquinas guiadas</b> para maximizar la activación "
+    "muscular con tempos precisos, minimizando el estrés espinal y articular. "
+    "Calentamiento específico de 5 minutos antes de comenzar.",
     "LEGS", AMBAR, legs_warmup, legs_variantes, legs_comp
 )
 
